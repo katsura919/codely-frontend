@@ -10,12 +10,14 @@ interface CodePreviewPanelProps {
   code: string;
   copied: boolean;
   onCopy: () => void;
+  onCodeChange?: (value: string | undefined) => void;
 }
 
 export function CodePreviewPanel({
   code,
   copied,
   onCopy,
+  onCodeChange,
 }: CodePreviewPanelProps) {
   return (
     <div className="flex-1 flex flex-col">
@@ -53,14 +55,18 @@ export function CodePreviewPanel({
           )}
         </div>
 
-        <TabsContent value="code" className="flex-1 m-0">
-          <CodeEditor code={code} />
+        <TabsContent
+          value="code"
+          className="flex-1 m-0 data-[state=active]:flex"
+        >
+          <CodeEditor code={code} onChange={onCodeChange} />
         </TabsContent>
 
-        <TabsContent value="preview" className="flex-1 m-0">
-          <div className="h-full">
-            <LivePreview code={code} />
-          </div>
+        <TabsContent
+          value="preview"
+          className="flex-1 m-0 min-h-125 data-[state=active]:flex"
+        >
+          <LivePreview code={code} />
         </TabsContent>
       </Tabs>
     </div>

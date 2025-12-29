@@ -28,7 +28,7 @@ export function ChatPanel({
   onSend,
 }: ChatPanelProps) {
   return (
-    <div className="w-1/3 border-r flex flex-col">
+    <div className="w-full lg:w-1/3 border-r lg:border-b-0 border-b flex flex-col lg:h-screen h-[50vh]">
       <div className="p-4 border-b">
         <h1 className="text-2xl font-bold">Codely</h1>
         <p className="text-sm text-muted-foreground">

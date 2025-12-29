@@ -7,9 +7,10 @@ const Editor = dynamic(() => import("@monaco-editor/react"), { ssr: false });
 
 interface CodeEditorProps {
   code: string;
+  onChange?: (value: string | undefined) => void;
 }
 
-export function CodeEditor({ code }: CodeEditorProps) {
+export function CodeEditor({ code, onChange }: CodeEditorProps) {
   if (!code) {
     return (
       <div className="flex items-center justify-center h-full text-muted-foreground">
@@ -27,16 +28,22 @@ export function CodeEditor({ code }: CodeEditorProps) {
   return (
     <Editor
       height="100%"
-      defaultLanguage="typescript"
+      defaultLanguage="javascript"
       value={code}
+      onChange={onChange}
       theme="vs-dark"
       options={{
-        readOnly: true,
         minimap: { enabled: false },
         fontSize: 14,
         lineNumbers: "on",
         scrollBeyondLastLine: false,
         wordWrap: "on",
+      }}
+      beforeMount={(monaco) => {
+        monaco.languages.typescript.javascriptDefaults.setDiagnosticsOptions({
+          noSemanticValidation: true,
+          noSyntaxValidation: false,
+        });
       }}
     />
   );

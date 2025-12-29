@@ -25,30 +25,32 @@ export function LivePreview({ code }: LivePreviewProps) {
   }
 
   return (
-    <SandpackProvider
-      template="react"
-      theme="dark"
-      files={{
-        "/App.js": code,
-      }}
-      customSetup={{
-        dependencies: {
-          "lucide-react": "latest",
-          clsx: "latest",
-          "tailwind-merge": "latest",
-        },
-      }}
-      options={{
-        externalResources: ["https://cdn.tailwindcss.com"],
-      }}
-    >
-      <SandpackLayout style={{ height: "100%" }}>
-        <SandpackPreview
-          showOpenInCodeSandbox={false}
-          showRefreshButton={true}
-          style={{ height: "100%" }}
-        />
-      </SandpackLayout>
-    </SandpackProvider>
+    <div className="w-full h-full">
+      <SandpackProvider
+        template="react"
+        theme="dark"
+        files={{
+          "/App.js": code,
+        }}
+        customSetup={{
+          dependencies: {
+            "lucide-react": "latest",
+            clsx: "latest",
+            "tailwind-merge": "latest",
+          },
+        }}
+        options={{
+          externalResources: ["https://cdn.tailwindcss.com"],
+        }}
+      >
+        <SandpackLayout style={{ height: "95vh", width: "100%" }}>
+          <SandpackPreview
+            showOpenInCodeSandbox={false}
+            showRefreshButton={true}
+            style={{ height: "100%", width: "100%" }}
+          />
+        </SandpackLayout>
+      </SandpackProvider>
+    </div>
   );
 }
