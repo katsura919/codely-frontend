@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { ChatPanel } from "@/components/chat-panel";
 import { CodePreviewPanel } from "@/components/code-preview-panel";
+import type { FileItem } from "@/components/file-tree";
 
 interface Message {
   role: "user" | "assistant";
@@ -15,8 +16,11 @@ export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
-  const [generatedCode, setGeneratedCode] =
-    useState(`import React, { useState } from 'react';
+  const [files, setFiles] = useState<FileItem[]>([
+    {
+      id: "1",
+      name: "NewsletterForm.jsx",
+      content: `import React, { useState } from 'react';
 
 export default function NewsletterForm() {
   const [email, setEmail] = useState('');
@@ -69,19 +73,38 @@ export default function NewsletterForm() {
       </div>
     </div>
   );
-}`);
+}`,
+      timestamp: new Date().toISOString(),
+    },
+  ]);
+  const [activeFileId, setActiveFileId] = useState<string>("1");
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(generatedCode);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
+    const activeFile = getActiveFile();
+    if (activeFile) {
+      navigator.clipboard.writeText(activeFile.content);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
   };
 
   const handleCodeChange = (value: string | undefined) => {
-    if (value !== undefined) {
-      setGeneratedCode(value);
+    if (value !== undefined && activeFileId) {
+      setFiles((prev) =>
+        prev.map((file) =>
+          file.id === activeFileId ? { ...file, content: value } : file
+        )
+      );
     }
+  };
+
+  const handleFileSelect = (fileId: string) => {
+    setActiveFileId(fileId);
+  };
+
+  const getActiveFile = () => {
+    return files.find((f) => f.id === activeFileId) || null;
   };
 
   const handleSend = async () => {
@@ -113,7 +136,17 @@ export default function NewsletterForm() {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
-      setGeneratedCode(response.data.code);
+
+      // Create new file from generated code
+      const newFile: FileItem = {
+        id: Date.now().toString(),
+        name: `Component${files.length}.jsx`,
+        content: response.data.code,
+        timestamp: response.data.timestamp,
+      };
+
+      setFiles((prev) => [...prev, newFile]);
+      setActiveFileId(newFile.id);
     } catch (error) {
       console.error("Error generating code:", error);
       const errorMessage: Message = {
@@ -129,7 +162,7 @@ export default function NewsletterForm() {
   };
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-background">
+    <div className="flex flex-col lg:flex-row h-screen bg-background dark">
       <ChatPanel
         messages={messages}
         input={input}
@@ -138,7 +171,10 @@ export default function NewsletterForm() {
         onSend={handleSend}
       />
       <CodePreviewPanel
-        code={generatedCode}
+        files={files}
+        activeFileId={activeFileId}
+        onFileSelect={handleFileSelect}
+        code={getActiveFile()?.content || ""}
         copied={copied}
         onCopy={handleCopy}
         onCodeChange={handleCodeChange}
