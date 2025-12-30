@@ -14,11 +14,13 @@ interface LivePreviewProps {
 export function LivePreview({ code }: LivePreviewProps) {
   if (!code) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
+      <div className="flex items-center justify-center h-full text-slate-500 bg-[#020617]">
         <div className="text-center">
-          <Eye className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <Eye className="h-12 w-12 mx-auto mb-4 opacity-20" />
           <p>No preview available</p>
-          <p className="text-sm mt-2">Generate some code first</p>
+          <p className="text-sm mt-2 text-slate-600">
+            Generate some code first
+          </p>
         </div>
       </div>
     );

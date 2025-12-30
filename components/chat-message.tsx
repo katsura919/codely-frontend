@@ -22,10 +22,10 @@ export function ChatMessage({ message }: ChatMessageProps) {
       }`}
     >
       <div
-        className={`shrink-0 w-6 h-6 rounded-full flex items-center justify-center ${
+        className={`shrink-0 w-8 h-8 rounded-full flex items-center justify-center border ${
           isUser
-            ? "bg-primary text-primary-foreground"
-            : "bg-muted text-muted-foreground"
+            ? "bg-white text-black border-white"
+            : "bg-white/5 text-white border-white/10"
         }`}
       >
         <span className="text-xs font-medium">{isUser ? "Y" : "C"}</span>
@@ -33,13 +33,13 @@ export function ChatMessage({ message }: ChatMessageProps) {
 
       <div className={`flex-1 ${isUser ? "flex justify-end" : ""}`}>
         <div
-          className={`rounded-lg px-4 py-2.5 max-w-[85%] ${
+          className={`rounded-2xl px-5 py-3 max-w-[85%] ${
             isUser
-              ? "bg-primary text-primary-foreground"
-              : "bg-muted/50 text-foreground border border-border/40"
+              ? "bg-white text-black"
+              : "bg-white/5 text-slate-200 border border-white/10"
           }`}
         >
-          <div className="text-[13px] leading-relaxed">
+          <div className="text-sm leading-relaxed">
             {message.role === "assistant" && message.content.length > 200
               ? "✓ Code generated successfully! Check the preview panel"
               : message.content}

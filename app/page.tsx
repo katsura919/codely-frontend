@@ -116,7 +116,7 @@ export default function Home() {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row h-screen bg-background dark animate-in slide-in-from-bottom duration-300">
+    <div className="flex flex-col lg:flex-row h-screen bg-[#020617] dark animate-in slide-in-from-bottom duration-300">
       <ChatPanel
         messages={messages}
         input={input}

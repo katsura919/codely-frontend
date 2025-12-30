@@ -13,11 +13,11 @@ interface CodeEditorProps {
 export function CodeEditor({ code, onChange }: CodeEditorProps) {
   if (!code) {
     return (
-      <div className="flex items-center justify-center h-full text-muted-foreground">
+      <div className="flex items-center justify-center h-full text-slate-500 bg-[#1e1e1e]">
         <div className="text-center">
-          <Code className="h-12 w-12 mx-auto mb-4 opacity-50" />
+          <Code className="h-12 w-12 mx-auto mb-4 opacity-20" />
           <p>No code generated yet</p>
-          <p className="text-sm mt-2">
+          <p className="text-sm mt-2 text-slate-600">
             Start by describing a component in the chat
           </p>
         </div>
